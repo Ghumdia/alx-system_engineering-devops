@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# This script prints Best School 10 times and hi on the 9th iteration
+
+c=1
+while ((c<10))
+do
+ if ((c==9))
+ then
+ 	echo "Best School"
+ 	echo "Hi"
+ 	((c++))
+ fi
+ 	echo "Best School"
+ 	((c++))
+done

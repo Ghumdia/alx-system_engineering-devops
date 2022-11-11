@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#This is a script that prints some different words based on iterations
+
+c=1
+while ((c<=10))
+	do
+		if ((c==4))
+		then
+			echo "bad luck"
+			((c++))
+		elif ((c==8))
+		then
+			echo "good luck"
+			((c++))
+		fi
+		echo "Best School"
+		((c++))
+	done
