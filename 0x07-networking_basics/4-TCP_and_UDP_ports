@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
+#displays the listining ports
 
 netstat -l --program
