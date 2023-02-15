@@ -3,8 +3,6 @@
 
 apt-get update
 apt-get install -y nginx
-apt-get update
-apt-get install -y nginx
 
 mkdir /etc/nginx/html
 touch /etc/nginx/html/index.html
