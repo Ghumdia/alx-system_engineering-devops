@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#Displays all running process
+#	shows all processes, users including does
+#	without tty
+
+ps -aufx
