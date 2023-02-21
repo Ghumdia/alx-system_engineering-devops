@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Displays "To infinity and beyond" indefinitely
+# Bash script that displays its own PID
 
-while true
+trap "echo I am invincible!!!" SIGTERM
+
+while :
 do
-  echo "To infinity and beyond"
-  sleep 2
-  trap 'echo "I am invincible"' SIGTERM 
+    echo "To infinity and beyond"
+    sleep 2
 done
