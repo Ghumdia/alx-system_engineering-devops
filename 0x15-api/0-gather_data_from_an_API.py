@@ -24,6 +24,7 @@ if __name__ == "__main__":
         employee_name = data[0]['name']
 
         # Print the employee TODO list progress in the specified format
-        print(f'Employee {employee_name} is done with tasks ({completed_task_count}/{total_tasks}):')
+        print('Employee {} is done with tasks ({}/{}):'.format(
+        employee_name, completed_task_count, total_tasks))
         for task in completed_tasks:
             print(f'\t {task["title"]}')
