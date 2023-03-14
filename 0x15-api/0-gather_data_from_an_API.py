@@ -1,7 +1,12 @@
 #!/usr/bin/python3
-"""Returns the to-do lists of an employee"""
+"""
+Returns the to-do lists of an employee
+"""
 import requests
 import sys
+"""
+Imports the necessary modules
+"""
 
 url = "https://jsonplaceholder.typicode.com/"
 id = int(sys.argv[1])
