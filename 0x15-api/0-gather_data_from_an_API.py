@@ -27,4 +27,4 @@ if __name__ == "__main__":
         print('Employee {} is done with tasks ({}/{}):'.format(
         employee_name, completed_task_count, total_tasks))
         for task in completed_tasks:
-            print(f'\t {task["title"]}')
+            print('\t {}'.format(task["title"]))
