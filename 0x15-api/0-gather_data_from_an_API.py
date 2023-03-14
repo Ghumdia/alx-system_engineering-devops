@@ -8,26 +8,22 @@ if __name__ == "__main__":
 
     import requests
     from sys import argv
-    if len(argv) < 2:
-        exit()
-    todos = requests.get(
-        "https://jsonplaceholder.typicode.com/todos?userId={}&completed=true"
-        .format(argv[1]))
-    name = requests.get(
-        "https://jsonplaceholder.typicode.com/users?id={}"
-        .format(argv[1]))
-    name = name.json()
-    name = name[0]["name"]
-    todo = requests.get(
-        "https://jsonplaceholder.typicode.com/todos?userId={}".format(argv[1]))
-    todo = todo.json()
-    todo = len(todo)
-    todos = todos.json()
-    todo_list = []
+    response = requests.get(f'https://jsonplaceholder.typicode.com/todos?userId={argv[1]}')
+    if response.status_code == 200:
+        # Extract JSON data from the response
+        data = response.json()
 
-    for x in todos:
-        todo_list.append("\t {}".format(x["title"]))
-    print("Employee {} is done with tasks({}/{}):"
-          .format(name, len(todos), todo))
-    for y in todo_list:
-        print(y)
+        # Get the list of completed tasks
+        completed_tasks = [task for task in data if task['completed']]
+
+        # Get the total number of tasks and the number of completed tasks
+        total_tasks = len(data)
+        completed_task_count = len(completed_tasks)
+
+        # Get the employee name from the first task
+        employee_name = data[0]['name']
+
+        # Print the employee TODO list progress in the specified format
+        print(f'Employee {employee_name} is done with tasks ({completed_task_count}/{total_tasks}):')
+        for task in completed_tasks:
+            print(f'\t {task["title"]}')
