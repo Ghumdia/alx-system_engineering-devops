@@ -1,30 +1,14 @@
 #!/usr/bin/python3
-"""
-place holder
-"""
-
+"""Returns to-do list information for a given employee ID."""
+import requests
+import sys
 
 if __name__ == "__main__":
+    url = "https://jsonplaceholder.typicode.com/"
+    user = requests.get(url + "users/{}".format(sys.argv[1])).json()
+    todos = requests.get(url + "todos", params={"userId": sys.argv[1]}).json()
 
-    import requests
-    from sys import argv
-    response = requests.get('https://jsonplaceholder.typicode.com/todos?userId={argv[1]}')
-    if response.status_code == 200:
-        # Extract JSON data from the response
-        data = response.json()
-
-        # Get the list of completed tasks
-        completed_tasks = [task for task in data if task['completed']]
-
-        # Get the total number of tasks and the number of completed tasks
-        total_tasks = len(data)
-        completed_task_count = len(completed_tasks)
-
-        # Get the employee name from the first task
-        employee_name = data[0]['name']
-
-        # Print the employee TODO list progress in the specified format
-        print('Employee {} is done with tasks ({}/{}):'.format(
-        employee_name, completed_task_count, total_tasks))
-        for task in completed_tasks:
-            print('\t {}'.format(task["title"]))
+    completed = [t.get("title") for t in todos if t.get("completed") is True]
+    print("Employee {} is done with tasks({}/{}):".format(
+        user.get("name"), len(completed), len(todos)))
+    [print("\t {}".format(c)) for c in completed]
