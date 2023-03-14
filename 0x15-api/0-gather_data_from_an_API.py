@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     import requests
     from sys import argv
-    response = requests.get(f'https://jsonplaceholder.typicode.com/todos?userId={argv[1]}')
+    response = requests.get('https://jsonplaceholder.typicode.com/todos?userId={argv[1]}')
     if response.status_code == 200:
         # Extract JSON data from the response
         data = response.json()
