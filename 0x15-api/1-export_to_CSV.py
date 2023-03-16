@@ -1,11 +1,7 @@
 #!/usr/bin/python3
-"""
-This script converts the json data to CSV form 
-and imports various modules
-"""
-
+"""Returns to-do list information for a given employee ID."""
 import csv
-import request
+import requests
 import sys
 
 if __name__ == '__main__':
