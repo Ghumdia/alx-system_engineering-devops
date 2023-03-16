@@ -1,35 +1,28 @@
-#!/usr/bin/python3
-"""Returns to-do list information for a given employee ID."""
+mport requests
 import csv
-import requests
 import sys
 
 if __name__ == '__main__':
-    # Check if the employee ID is provided as a command-line argument
     if len(sys.argv) != 2:
-        print("Usage: python3 gather_data_from_an_API.py <employee_id>")
+        print(f"Usage: {sys.argv[0]} EMPLOYEE_ID")
         sys.exit(1)
 
-    # Retrieve the employee information and TODO list from the API
-    id = sys.argv[1]
-    response = requests.get(
-        'https://jsonplaceholder.typicode.com/users/{}'.format(id))
-    todos = requests.get(
-        'https://jsonplaceholder.typicode.com/todos?userId={}'.format(id))
+    url = 'https://jsonplaceholder.typicode.com/todos'
+    employee_id = sys.argv[1]
+    response = requests.get(url, params={'userId': employee_id})
+    employee_name = requests.get('https://jsonplaceholder.typicode.com/users/{}'.format(employee_id)).json().get('username')
+    tasks = response.json()
+    filename = employee_id + '.csv'
 
-    # Extract the necessary information from the API response
-    employee_name = response.json()['name']
-    tasks = len(todos.json())
-    d_tasks = len([todo for todo in todos.json() if todo['completed']])
+    with open(filename, 'w', newline='') as csvfile:
+        fieldnames = ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-    filename = '{}.csv'.format(id)
-    with open(filename, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        for todo in todos.json():
-
-            # Extract information from todo item
-            task_completed = str(todo['completed'])
-            task_title = todo['title']
-            
-            # Write information to CSV file
-            writer.writerow([id, employee_name, task_completed, task_title])
+        writer.writeheader()
+        for task in tasks:
+            writer.writerow({
+                'USER_ID': employee_id,
+                'USERNAME': employee_name,
+                'TASK_COMPLETED_STATUS': str(task.get('completed')),
+                'TASK_TITLE': task.get('title')
+            })
