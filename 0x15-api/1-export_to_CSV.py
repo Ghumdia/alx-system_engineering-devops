@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-"""Exports to-do list information for a given employee ID in CSV format."""
+"""Returns to-do list information for a given employee ID."""
+import csv
 import requests
 import sys
-import csv
 
 if __name__ == '__main__':
     # Check if the employee ID is provided as a command-line argument
@@ -19,13 +19,21 @@ if __name__ == '__main__':
 
     # Extract the necessary information from the API response
     employee_name = response.json()['name']
-    tasks = len(todos.json())
-    d_tasks = len([todo for todo in todos.json() if todo['completed']])
-    task_list = [[id, employee_name, todo['completed'], todo['title']] for todo in todos.json()]
 
-    # Save the employee TODO list progress in a CSV file
-    with open('{}.csv'.format(id), mode='w', newline='') as file:
+    # Create a CSV file and write header row
+    filename = '{}.csv'.format(id)
+    with open(filename, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerows(task_list)
-    print("Data exported successfully to {}.csv".format(id))
+        writer.writerow(['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE'])
+
+        for todo in todos.json():
+            # Extract information from todo item
+            task_completed = str(todo['completed'])
+            task_title = todo['title']
+            
+            # Write information to CSV file
+            writer.writerow([id, employee_name, task_completed, task_title])
+    
+    # Display success message
+    print('Data successfully exported to {}'.format(filename))
 
