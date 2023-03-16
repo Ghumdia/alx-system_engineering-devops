@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-"""Convertes to CSV form"""
+"""
+This script converts the json data to CSV form 
+and imports various modules
+"""
 
 import csv
 import request
