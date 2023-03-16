@@ -34,4 +34,3 @@ if __name__ == '__main__':
     json_data = {id: tasks}
     with open("{}.json".format(id), "w") as json_file:
         json.dump(json_data, json_file)
-
