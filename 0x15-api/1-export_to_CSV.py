@@ -1,38 +1,30 @@
 #!/usr/bin/python3
-"""Returns to-do list information for a given employee ID."""
-import csv
-import requests
-import sys
+"""
+Write a Python script that, using this REST API, for a given employee ID,
+returns information about his/her TODO list progress
+"""
+if __name__ == "__main__":
 
-if __name__ == '__main__':
-    # Check if the employee ID is provided as a command-line argument
-    if len(sys.argv) != 2:
-        print("Usage: python3 gather_data_from_an_API.py <employee_id>")
-        sys.exit(1)
+    import requests
+    import sys
 
-    # Retrieve the employee information and TODO list from the API
-    id = sys.argv[1]
-    response = requests.get(
-        'https://jsonplaceholder.typicode.com/users/{}'.format(id))
-    todos = requests.get(
-        'https://jsonplaceholder.typicode.com/todos?userId={}'.format(id))
+    if len(sys.argv) == 2 and sys.argv[1].isdigit():
+        u_url = 'https://jsonplaceholder.typicode.com/users/'
+        td_url = 'https://jsonplaceholder.typicode.com/todos?userId='
 
-    # Extract the necessary information from the API response
-    employee_name = response.json()['name']
+        USER_ID = requests.get(u_url + sys.argv[1]).json()['id']
+        USERNAME = requests.get(u_url + sys.argv[1]).json()['username']
+        TASK_COMPLETED_STATUSES = [task['completed'] for task in requests.
+                                   get(td_url + sys.argv[1]).json()]
+        TASKS_TITLES = [task['title'] for task in requests.
+                        get(td_url + sys.argv[1]).json()]
+        TOTAL_NUMBER_OF_TASKS = len(requests.get(td_url + sys.argv[1]).json())
 
-    # Create a CSV file and write header row
-    filename = '{}.csv'.format(id)
-    with open(filename, mode='w', newline='') as file:
-        writer = csv.writer(file)
+        TASKS_LIST = ['"{}","{}","{}","{}"\n'.
+                      format(USER_ID, USERNAME, TASK_COMPLETED_STATUSES[N],
+                             TASKS_TITLES[N])
+                      for N in range(TOTAL_NUMBER_OF_TASKS)]
 
-        for todo in todos.json():
-            # Extract information from todo item
-            task_completed = str(todo['completed'])
-            task_title = todo['title']
-            
-            # Write information to CSV file
-            writer.writerow([id, employee_name, task_completed, task_title])
-    
-    # Display success message
-    print('Data successfully exported to {}'.format(filename))
-
+        with open('{}.csv'.format(USER_ID), 'w') as test_file:
+            for TASK_LIST in TASKS_LIST:
+                test_file.write(TASK_LIST)
