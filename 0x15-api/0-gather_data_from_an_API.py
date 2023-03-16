@@ -1,29 +1,28 @@
 #!/usr/bin/python3
-"""Returns to-do list information for a given employee ID."""
-import requests
-import sys
+"""
+Write a Python script that, using this REST API, for a given employee ID,
+returns information about his/her TODO list progress
+"""
+if __name__ == "__main__":
 
-if __name__ == '__main__':
-    # Check if the employee ID is provided as a command-line argument
-    if len(sys.argv) != 2:
-        print("Usage: python3 gather_data_from_an_API.py <employee_id>")
-        sys.exit(1)
+    import requests
+    import sys
 
-    # Retrieve the employee information and TODO list from the API
-    id = sys.argv[1]
-    response = requests.get(
-        'https://jsonplaceholder.typicode.com/users/{}'.format(id))
-    todos = requests.get(
-        'https://jsonplaceholder.typicode.com/todos?userId={}'.format(id))
+    if len(sys.argv) == 2 and sys.argv[1].isdigit():
+        u_url = 'https://jsonplaceholder.typicode.com/users/'
+        td_url = 'https://jsonplaceholder.typicode.com/todos?userId='
 
-    # Extract the necessary information from the API response
-    employee_name = response.json()['name']
-    tasks = len(todos.json())
-    d_tasks = len([todo for todo in todos.json() if todo['completed']])
+        EMPLOYEE_NAME = requests.get(u_url + sys.argv[1]).json()['name']
+        NUMBER_OF_DONE_TASKS = len([task for task in requests.
+                                    get(td_url + sys.argv[1]).json()
+                                    if task['completed'] is True])
+        TOTAL_NUMBER_OF_TASKS = len(requests.get(td_url + sys.argv[1]).json())
+        DONE_TASKS_TITLES = [task['title'] for task in requests.
+                             get(td_url + sys.argv[1]).json()
+                             if task['completed'] is True]
 
-    # Display the employee TODO list progress in the required format
-    print("Employee {} is done with tasks({}/{}):".format(
-        employee_name, d_tasks, tasks))
-    for todo in todos.json():
-        if todo['completed']:
-            print("\t {}".format(todo['title']))
+        print('Employee {} is done with tasks({}/{}):'.
+              format(EMPLOYEE_NAME, NUMBER_OF_DONE_TASKS,
+                     TOTAL_NUMBER_OF_TASKS))
+        for TASK_TITLE in DONE_TASKS_TITLES:
+            print('\t {}'.format(TASK_TITLE))
