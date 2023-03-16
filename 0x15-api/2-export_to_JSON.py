@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-"""Returns to-do list information for a given employee ID."""
+"""
+Returns to-do list information for a given employee ID.
+"""
+
 import json
 import requests
 import sys
@@ -12,32 +15,20 @@ if __name__ == '__main__':
 
     # Retrieve the employee information and TODO list from the API
     id = sys.argv[1]
-    response = requests.get(
-        'https://jsonplaceholder.typicode.com/users/{}'.format(id))
-    todos = requests.get(
-        'https://jsonplaceholder.typicode.com/todos?userId={}'.format(id))
+    response = requests.get('https://jsonplaceholder.typicode.com/users/{}'.format(id))
+    todos = requests.get('https://jsonplaceholder.typicode.com/todos?userId={}'.format(id))
 
     # Extract the necessary information from the API response
     employee_name = response.json()['name']
-    tasks = todos.json()
-    tasks_list = []
-    for task in tasks:
-        task_dict = {
-            'task': task['title'],
-            'completed': task['completed'],
-            'username': employee_name
-        }
-        tasks_list.append(task_dict)
+    task_list = []
+    for todo in todos.json():
+        task_list.append({
+            "task": todo['title'],
+            "completed": todo['completed'],
+            "username": employee_name
+        })
 
-    # Export the employee TODO list in JSON format
+    # Write the task list to a JSON file
     filename = '{}.json'.format(id)
-    with open(filename, 'w') as f:
-        json.dump({id: tasks_list}, f, indent=4)
-
-    # Display the employee TODO list progress in the required format
-    print("Employee {} is done with tasks({}/{}):".format(
-        employee_name, \
-	len([task for task in tasks if task['completed']]), len(tasks)))
-    for task in tasks:
-        if task['completed']:
-            print("\t{}".format(task['title']))
+    with open(filename, mode='w') as file:
+        json.dump({id: task_list}, file)
