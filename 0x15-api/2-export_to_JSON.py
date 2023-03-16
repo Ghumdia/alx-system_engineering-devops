@@ -15,8 +15,10 @@ if __name__ == '__main__':
 
     # Retrieve the employee information and TODO list from the API
     id = sys.argv[1]
-    response = requests.get('https://jsonplaceholder.typicode.com/users/{}'.format(id))
-    todos = requests.get('https://jsonplaceholder.typicode.com/todos?userId={}'.format(id))
+    response = requests.get('https://jsonplaceholder.typicode.com/users/{}'\
+		.format(id))
+    todos = requests.get('https://jsonplaceholder.typicode.com/\
+			todos?userId={}'.format(id))
 
     # Extract the necessary information from the API response
     employee_name = response.json()['name']
