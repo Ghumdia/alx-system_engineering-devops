@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """Returns to-do list information for a given employee ID."""
+import json
 import requests
 import sys
-import json
 
 if __name__ == '__main__':
     # Check if the employee ID is provided as a command-line argument
@@ -36,8 +36,8 @@ if __name__ == '__main__':
 
     # Display the employee TODO list progress in the required format
     print("Employee {} is done with tasks({}/{}):".format(
-        employee_name, len([task for task in tasks if task['completed']]), len(tasks)))
+        employee_name, \
+	len([task for task in tasks if task['completed']]), len(tasks)))
     for task in tasks:
         if task['completed']:
             print("\t{}".format(task['title']))
-
