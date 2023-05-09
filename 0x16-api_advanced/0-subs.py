@@ -4,13 +4,13 @@ import requests
 
 def number_of_subscribers(subreddit):
     """Returns the number of subscriber counts for a subreddit"""
-    x = requests.get(f"https://www.reddit.com/r/{subreddit}/about.json", headers={'User-Agent': 'Mozilla/5.0'})
+    x = requests.get("https://www.reddit.com/r/{}/about.json".format(subreddit), headers={'User-Agent': 'Mozilla/5.0'})
     if x.ok:
         data = x.json()
         try:
-            sub_count = data['data']['subscribers']
-            print(sub_count)
+            sub_count = int(data['data']['subscribers'])
+            return(sub_count)
         except KeyError:
-            print(0)
+            return(0)
     else :
-        print(0)
+        return(0)
