@@ -2,9 +2,11 @@
 """Makes a query for the subscriber counts for a sub reddit"""
 import requests
 
+
 def number_of_subscribers(subreddit):
     """Returns the number of subscriber counts for a subreddit"""
-    x = requests.get("https://www.reddit.com/r/{}/about.json".format(subreddit), headers={'User-Agent': 'Mozilla/5.0'})
+    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    x = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
     if x.ok:
         data = x.json()
         try:
@@ -12,5 +14,5 @@ def number_of_subscribers(subreddit):
             return(sub_count)
         except KeyError:
             return(0)
-    else :
+    else:
         return(0)
